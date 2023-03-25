@@ -15,121 +15,119 @@ public class AVIFileConstruction : IAVIFileConstruction
 
     private byte[] _hdrl =
     {
-        0x68,
-        0x64,
-        0x72,
-        0x6C
+        (byte)'h',
+        (byte)'d',
+        (byte)'r',
+        (byte)'l'
     }; //hdrl
 
     private byte[] _list =
     {
-        0x4C,
-        0x49,
-        0x53,
-        0x54
+        (byte)'L',
+        (byte)'I',
+        (byte)'S',
+        (byte)'T'
     }; //LIST
 
-    private byte[] _compression =
+    /*private byte[] _compression =
     {
         0x4D,
         0x4A,
         0x50,
         0x47
-    }; //MJPG
+    }; //MJPG*/
 
-    /*private  byte[] _compression =
+    private byte[] _compression =
     {
-        0x4A,
-        0x50,
-        0x45,
-        0x47
-    }; //JPEG*/
+        (byte)'J',
+        (byte)'P',
+        (byte)'E',
+        (byte)'G'
+    }; //JPEG
 
     private byte[] _riff =
     {
-        0x52,
-        0x49,
-        0x46,
-        0x46
+        (byte)'R',
+        (byte)'I',
+        (byte)'F',
+        (byte)'F'
     }; //RIFF
 
     private byte[] _movi =
     {
-        0x6D,
-        0x6F,
-        0x76,
-        0x69
+        (byte)'m',
+        (byte)'o',
+        (byte)'v',
+        (byte)'i'
     }; //movi
 
     private byte[] _tag =
     {
-        0x30,
-        0x30,
-        0x64,
-        0x63
+        (byte)'0',
+        (byte)'0',
+        (byte)'d',
+        (byte)'c'
     }; //00dc = 压缩的视频数据
 
     private byte[] _avi =
     {
-        0x41,
-        0x56,
-        0x49,
-        0x20
+        (byte)'A',
+        (byte)'V',
+        (byte)'I',
+        (byte)' '
     }; //AVI
 
     private byte[] _avih =
     {
-        0x61,
-        0x76,
-        0x69,
-        0x68
+        (byte)'a',
+        (byte)'v',
+        (byte)'i',
+        (byte)'h'
     }; //avih
 
-    private byte[] _idxl =
+    private byte[] _idx1 =
     {
-        0x00,
-        0x00,
-        0x69,
-        0x6C
-    }; //idxl
+        (byte)'i',
+        (byte)'d',
+        (byte)'x',
+        (byte)'1'
+    }; //idx1
 
     private byte[] _strl =
     {
-        0x73,
-        0x74,
-        0x72,
-        0x6C
+        (byte)'s',
+        (byte)'t',
+        (byte)'r',
+        (byte)'l'
     }; //strl
 
     private byte[] _strh =
     {
-        0x73,
-        0x74,
-        0x72,
-        0x68
+        (byte)'s',
+        (byte)'t',
+        (byte)'r',
+        (byte)'h'
     }; //strh 
 
     private byte[] _strf =
     {
-        0x73,
-        0x74,
-        0x72,
-        0x66
+        (byte)'s',
+        (byte)'t',
+        (byte)'r',
+        (byte)'f'
     }; //strf 
 
     private byte[] _vids =
     {
-        0x76,
-        0x69,
-        0x64,
-        0x73
+        (byte)'v',
+        (byte)'i',
+        (byte)'d',
+        (byte)'s'
     }; //流的类型，vids表示视频流，auds表示音频流
 
     private const ushort BitCount = 24;
 
     #endregion
-
-    #region 私有方法
 
     /// <summary>
     /// 写入索引
@@ -140,7 +138,7 @@ public class AVIFileConstruction : IAVIFileConstruction
         var indexChunkSize = 16 * (uint)_nframes;
 
         // 写入Idxl
-        fs.Write(_idxl, 0, 4);
+        fs.Write(_idx1, 0, 4);
 
         // 写入Size
         fs.Write(StructUtils.StructToBytes(indexChunkSize), 0, 4);
@@ -186,7 +184,7 @@ public class AVIFileConstruction : IAVIFileConstruction
             {
                 ChunkId             = _avih,
                 ChunkSize           = (uint)(Marshal.SizeOf(typeof(AVI_AVIH_CHUNK)) - 8),
-                MicroSecPerFrame    = (uint)(1000000 / fps),
+                MicroSecPerFrame    = (uint)(1.0 / fps * 1000),
                 MaxBytesPerSec      = 25000,
                 PaddingGranularity  = 0,
                 Flags               = 0x10,
@@ -327,8 +325,6 @@ public class AVIFileConstruction : IAVIFileConstruction
         _sizeList.Add(length);
     }
 
-    #endregion
-
     /// <summary>
     /// 构建AVI
     /// </summary>
@@ -356,6 +352,7 @@ public class AVIFileConstruction : IAVIFileConstruction
         }
 
         // 写入索引完成构建Avi
-        AviFinish(fileStream, aviBuildParameter.FixedWidth, aviBuildParameter.FixedHeight, 24, aviBuildParameter.ImageMaxLength);
+        AviFinish(fileStream, aviBuildParameter.FixedWidth, aviBuildParameter.FixedHeight, 24,
+                aviBuildParameter.ImageMaxLength);
     }
 }
