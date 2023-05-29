@@ -1,9 +1,4 @@
-﻿using System.Runtime.InteropServices;
-using AlitaSystemCore.Extras.StreamingConversion.Interface;
-using AlitaSystemCore.Extras.StreamingConversion.Models;
-using AlitaSystemCore.Extras.StreamingConversion.Structs;
-
-namespace AlitaSystemCore.Extras.StreamingConversion.Internal;
+﻿namespace AlitaSystemCore.Extras.StreamingConversion.Internal;
 
 public class AVIFileConstruction : IAVIFileConstruction
 {
@@ -331,7 +326,7 @@ public class AVIFileConstruction : IAVIFileConstruction
     /// <param name="fileStream"></param>
     /// <param name="aviBuildParameter"></param>
     /// <returns></returns>
-    public async Task Construction(FileStream fileStream, AviBuildParameter aviBuildParameter)
+    public async Task Construction(FileStream fileStream, VideoBuildParameter aviBuildParameter)
     {
         // 开始构建Avi文件
         AviInit(fileStream);
@@ -352,7 +347,7 @@ public class AVIFileConstruction : IAVIFileConstruction
         }
 
         // 写入索引完成构建Avi
-        AviFinish(fileStream, aviBuildParameter.FixedWidth, aviBuildParameter.FixedHeight, 24,
+        AviFinish(fileStream, aviBuildParameter.ImageSize.Width, aviBuildParameter.ImageSize.Height, 24,
                 aviBuildParameter.ImageMaxLength);
     }
 }

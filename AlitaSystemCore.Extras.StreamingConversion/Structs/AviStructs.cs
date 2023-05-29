@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace AlitaSystemCore.Extras.StreamingConversion.Structs;
+﻿namespace AlitaSystemCore.Extras.StreamingConversion.Structs;
 
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct AVI_RIFF_HEAD
@@ -109,7 +107,6 @@ public struct AVI_STRH_CHUNK
     public AVI_RECT_FRAME RcFrame; //这个流在视频主窗口中的显示位置，设为{0,0，width,height}即可
 }
 
-
 /*对于视频流，strf块结构如下*/
 [StructLayout(LayoutKind.Sequential, Pack = 1)]
 public struct AVI_STRF_CHUNK
@@ -143,6 +140,7 @@ public struct AVI_STRL_LIST
 {
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]
     public byte[] id; // 块ID，固定为LIST
+
     public uint size; // 块大小，等于struct avi_strl_list去掉id和size的大小
 
     [MarshalAs(UnmanagedType.ByValArray, SizeConst = 4)]

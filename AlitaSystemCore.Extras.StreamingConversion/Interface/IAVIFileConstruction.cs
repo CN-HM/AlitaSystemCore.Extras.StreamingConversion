@@ -1,6 +1,4 @@
-﻿using AlitaSystemCore.Extras.StreamingConversion.Models;
-
-namespace AlitaSystemCore.Extras.StreamingConversion.Interface;
+﻿namespace AlitaSystemCore.Extras.StreamingConversion.Interface;
 
 public interface IAVIFileConstruction
 {
@@ -10,5 +8,5 @@ public interface IAVIFileConstruction
     /// <param name="fileStream"></param>
     /// <param name="aviBuildParameter"></param>
     /// <returns></returns>
-    Task Construction(FileStream fileStream, AviBuildParameter aviBuildParameter);
+    Task Construction(FileStream fileStream, VideoBuildParameter aviBuildParameter);
 }

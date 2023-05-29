@@ -1,6 +1,4 @@
-﻿using System.Runtime.InteropServices;
-
-namespace AlitaSystemCore.Extras.StreamingConversion.Internal;
+﻿namespace AlitaSystemCore.Extras.StreamingConversion.Internal;
 
 public static class StructUtils
 {
