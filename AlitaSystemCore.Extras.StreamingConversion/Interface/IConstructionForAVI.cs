@@ -1,6 +1,6 @@
 ﻿namespace AlitaSystemCore.Extras.StreamingConversion.Interface;
 
-public interface IAVIFileConstruction
+public interface IConstructionForAVI
 {
     /// <summary>
     /// 构建AVI

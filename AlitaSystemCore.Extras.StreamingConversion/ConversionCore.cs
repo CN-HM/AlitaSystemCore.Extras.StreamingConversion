@@ -9,14 +9,15 @@ public class ConversionCore : IConversionCore
 {
     private const string TempVideoFilesPath = @"TempVideoFiles\";
     private const string TempVideoFilesFirstName = "ConversionCore_";
-    private readonly IAVIFileConstruction _jpegToAvi;
-
+    private readonly IConstructionForAVI _constructionForAvi;
+    private readonly IConstructionForMP4ByFFmpeg _constructionForMp4ByFFmpeg;
     /// <summary>
     /// 构造函数
     /// </summary>
-    public ConversionCore(IAVIFileConstruction jpegToAvi)
+    public ConversionCore(IConstructionForAVI constructionForAvi, IConstructionForMP4ByFFmpeg constructionForMp4ByFFmpeg)
     {
-        _jpegToAvi = jpegToAvi;
+        _constructionForAvi              = constructionForAvi;
+        _constructionForMp4ByFFmpeg = constructionForMp4ByFFmpeg;
     }
 
     /// <summary>
@@ -58,7 +59,7 @@ public class ConversionCore : IConversionCore
         await using var fpAvi = new FileStream(videoFilePath, FileMode.Create);
 
         // 构建Avi文件
-        await _jpegToAvi.Construction(fpAvi, new VideoBuildParameter
+        await _constructionForAvi.Construction(fpAvi, new VideoBuildParameter
         {
             ImageMaxLength = (int)fileStream.Length,
             ImagePaths     = imagePaths,
@@ -96,20 +97,17 @@ public class ConversionCore : IConversionCore
         var videoFilePath = Path.Combine(Directory.GetCurrentDirectory(),
                 $"{TempVideoFilesPath}{TempVideoFilesFirstName}{Guid.NewGuid():N}.mp4");
 
-        // 初始化转换
-        var imageToMp4Conversion = new ImageToMp4Conversion(new VideoBuildParameter
+        // 生成视频
+        _constructionForMp4ByFFmpeg.Build(new VideoBuildParameter
         {
             VideoFilePath = videoFilePath,
-            ImageSize  = firstImage.Size,
-            ImagePaths = imagePaths,
-            Fps        = fps
+            ImageSize     = firstImage.Size,
+            ImagePaths    = imagePaths,
+            Fps           = fps
         });
 
-        // 生成视频
-        imageToMp4Conversion.Build();
-
         // 释放资源
-        imageToMp4Conversion.Dispose();
+        _constructionForMp4ByFFmpeg.Dispose();
 
         return videoFilePath;
     }
