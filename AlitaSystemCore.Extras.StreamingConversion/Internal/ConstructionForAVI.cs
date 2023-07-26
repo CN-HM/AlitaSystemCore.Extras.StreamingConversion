@@ -1,6 +1,6 @@
 ﻿namespace AlitaSystemCore.Extras.StreamingConversion.Internal;
 
-public class ConstructionForAVI : IConstructionForAVI
+public class ConstructionForAVI 
 {
     #region 私有变量
 
